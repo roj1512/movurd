@@ -1,3 +1,4 @@
+import { serve } from "https://deno.land/std@0.171.0/http/server.ts";
 import { AuthHeader } from "https://deno.land/x/twi@1.2.2/types.ts";
 import { auth, Client } from "https://deno.land/x/twi@1.2.2/mod.ts";
 import "https://deno.land/std@0.171.0/dotenv/load.ts";
@@ -54,22 +55,26 @@ const authClient = new OAuth2User({
 authClient.token = await token.findOne();
 const client = new Client(authClient);
 
-const response = await fetch(env.API_URL);
+serve(async () => {
+  const response = await fetch(env.API_URL);
 
-if (response.status == 200) {
-  const text = await response.text();
-  const hash = await digest(text);
-  const alreadyTweeted = typeof (await tweetedTexts.findOne({ hash })) ===
-    "object";
+  if (response.status == 200) {
+    const text = await response.text();
+    const hash = await digest(text);
+    const alreadyTweeted = typeof (await tweetedTexts.findOne({ hash })) ===
+      "object";
 
-  if (!alreadyTweeted) {
-    const response = await client.tweets.createTweet({ text });
-    if (response.data) {
-      await tweetedTexts.insertOne({
-        tweetedAt: new Date(),
-        hash,
-        tweet: response.data,
-      });
+    if (!alreadyTweeted) {
+      const response = await client.tweets.createTweet({ text });
+      if (response.data) {
+        await tweetedTexts.insertOne({
+          tweetedAt: new Date(),
+          hash,
+          tweet: response.data,
+        });
+      }
     }
   }
-}
+
+  return new Response(null, { status: 200 });
+});
