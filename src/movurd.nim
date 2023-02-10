@@ -29,7 +29,6 @@ proc getHandler(markov: MarkovGenerator, dbConn: DbConn): OnRequest =
                 insert generatedText
         except DbError as e:
             if "UNIQUE constraint failed" in e.msg:
-                echo "duplicate"
                 req.send(Http404)
                 return
             else:
