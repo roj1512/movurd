@@ -14,7 +14,7 @@ const env = cleanEnv(Deno.env.toObject(), {
 
 const database = await new MongoClient().connect(env.MONGODB_URI);
 const token = database.collection("token");
-const tweetedTexts = (database).collection("tweeted_texts");
+const tweetedTexts = database.collection("tweeted_texts");
 
 //#region utils
 
@@ -59,7 +59,8 @@ serve(async () => {
   const response = await fetch(env.API_URL);
 
   if (response.status == 200) {
-    const text = await response.text();
+    const originalText = await response.text();
+    const text = originalText.slice(0, 280);
     const hash = await digest(text);
     const alreadyTweeted = typeof (await tweetedTexts.findOne({ hash })) ===
       "object";
