@@ -5,7 +5,7 @@ author        = "Roj"
 description   = "A new awesome nimble package"
 license       = "MIT"
 srcDir        = "src"
-bin           = @["nimovurd"]
+bin           = @["movurd"]
 
 
 # Dependencies
