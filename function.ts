@@ -1,4 +1,4 @@
-import { serve } from "https://deno.land/std@0.171.0/http/server.ts";
+import { serve } from "https://deno.land/std@0.177.0/http/server.ts";
 import { AuthHeader } from "https://deno.land/x/twi@1.2.2/types.ts";
 import { auth, Client } from "https://deno.land/x/twi@1.2.2/mod.ts";
 import "https://deno.land/std@0.177.0/dotenv/load.ts";
