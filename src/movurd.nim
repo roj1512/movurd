@@ -38,7 +38,7 @@ proc getHandler(markov: MarkovGenerator, dbConn: DbConn): OnRequest =
         req.send(Http200, text, "Content-Type: text/plain; charset=UTF-8")
 
 when isMainModule:
-    var file = open("tweets/all")
+    var file = open("tweets.txt")
     let phrases = file.readAll().split("\n")
     file.close()
     let markov = newMarkov(phrases)
