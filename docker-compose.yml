@@ -1,0 +1,13 @@
+services:
+  server:
+    build: .
+    tty: true
+    stdin_open: true
+    network_mode: host
+    restart: unless-stopped
+    volumes:
+      - movurd:/app
+
+volumes:
+  movurd:
+    external: true
