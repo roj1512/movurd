@@ -1,9 +1,9 @@
-import { serve } from "https://deno.land/std@0.177.0/http/server.ts";
-import { AuthHeader } from "https://deno.land/x/twi@1.2.2/types.ts";
-import { auth, Client } from "https://deno.land/x/twi@1.2.2/mod.ts";
-import "https://deno.land/std@0.177.0/dotenv/load.ts";
-import { MongoClient } from "https://deno.land/x/mongo@v0.31.1/mod.ts";
-import { cleanEnv, str, url } from "https://deno.land/x/envalid@0.1.2/mod.ts";
+import { serve } from "std/http/server.ts";
+import { MongoClient } from "mongo/mod.ts";
+import { AuthHeader } from "twi/types.ts";
+import { auth, Client } from "twi/mod.ts";
+import "std/dotenv/load.ts";
+import { cleanEnv, str, url } from "envalid/mod.ts";
 
 const env = cleanEnv(Deno.env.toObject(), {
   CLIENT_ID: str(),
