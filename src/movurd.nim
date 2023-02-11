@@ -1,3 +1,4 @@
+import os
 import md5
 import options
 import strutils
@@ -37,7 +38,13 @@ proc getHandler(markov: MarkovGenerator, dbConn: DbConn): OnRequest =
         req.send(Http200, text, "Content-Type: text/plain; charset=UTF-8")
 
 when isMainModule:
-    var file = open("tweets.txt")
+    var filename: string
+    try:
+        filename = paramStr(1)
+    except:
+        filename = "tweets.txt"
+
+    var file = open(filename)
     let phrases = file.readAll().split("\n")
     file.close()
     let markov = newMarkov(phrases)
