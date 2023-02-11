@@ -3,6 +3,7 @@ services:
     build: .
     tty: true
     stdin_open: true
+    working_dir: /app
     network_mode: host
     restart: unless-stopped
     volumes:
