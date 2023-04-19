@@ -1,9 +1,9 @@
-import { serve } from "https://deno.land/std@0.171.0/http/server.ts";
-import { AuthHeader } from "https://deno.land/x/twi@1.2.2/types.ts";
-import { auth, Client } from "https://deno.land/x/twi@1.2.2/mod.ts";
-import "https://deno.land/std@0.171.0/dotenv/load.ts";
-import { MongoClient } from "https://deno.land/x/mongo@v0.31.1/mod.ts";
-import { cleanEnv, str, url } from "https://deno.land/x/envalid@0.1.2/mod.ts";
+import { serve } from "std/http/server.ts";
+import { MongoClient } from "mongo/mod.ts";
+import { AuthHeader } from "twi/types.ts";
+import { auth, Client } from "twi/mod.ts";
+import "std/dotenv/load.ts";
+import { cleanEnv, str, url } from "envalid/mod.ts";
 
 const env = cleanEnv(Deno.env.toObject(), {
   CLIENT_ID: str(),
@@ -14,7 +14,7 @@ const env = cleanEnv(Deno.env.toObject(), {
 
 const database = await new MongoClient().connect(env.MONGODB_URI);
 const token = database.collection("token");
-const tweetedTexts = (database).collection("tweeted_texts");
+const tweetedTexts = database.collection("tweeted_texts");
 
 //#region utils
 
@@ -59,7 +59,8 @@ serve(async () => {
   const response = await fetch(env.API_URL);
 
   if (response.status == 200) {
-    const text = await response.text();
+    const originalText = await response.text();
+    const text = originalText.slice(0, 280);
     const hash = await digest(text);
     const alreadyTweeted = typeof (await tweetedTexts.findOne({ hash })) ===
       "object";

@@ -1,0 +1,6 @@
+[submodule "profanity_data"]
+	path = profanity_data
+	url = https://github.com/0xdolan/kurdish-profanity
+[submodule "tweet_data"]
+	path = tweet_data
+	url = https://github.com/Hrazhan/twitter_ckb_scraper

@@ -5,6 +5,7 @@ import (
 	"encoding/base64"
 	"io/ioutil"
 	"net/http"
+	"os"
 	"strings"
 	"sync"
 
@@ -54,7 +55,11 @@ func main() {
 	}
 
 	chain := gomarkov.NewChain(1)
-	bytes, _ := ioutil.ReadFile("tweets/all")
+	filename := "tweets.txt"
+	if len(os.Args) > 1 {
+		filename = os.Args[1]
+	}
+	bytes, _ := ioutil.ReadFile(filename)
 	lines := strings.Split(string(bytes), "\n")
 	for i := range lines {
 		chain.Add(strings.Split(lines[i], " "))
@@ -76,6 +81,7 @@ func main() {
 			w.WriteHeader(http.StatusInternalServerError)
 		} else {
 			if ok {
+				w.Header().Set("Content-Type", "text/plain; charset=utf-8")
 				w.Write([]byte(text))
 			} else {
 				w.WriteHeader(http.StatusNotFound)

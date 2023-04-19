@@ -1,9 +1,7 @@
-import { config } from "https://deno.land/std@0.171.0/dotenv/mod.ts";
-import { cleanEnv, str } from "https://deno.land/x/envalid@0.1.2/mod.ts";
-import { Application, Router } from "https://deno.land/x/oak@v11.1.0/mod.ts";
-import { auth, Client } from "https://deno.land/x/twi@1.2.2/mod.ts";
-
-await config({ export: true });
+import { Application, Router } from "oak/mod.ts";
+import { auth, Client } from "twi/mod.ts";
+import { cleanEnv, str } from "envalid/mod.ts";
+import "std/dotenv/load.ts";
 
 const env = cleanEnv(Deno.env.toObject(), {
   CLIENT_ID: str(),
